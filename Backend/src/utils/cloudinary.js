@@ -11,10 +11,14 @@ const uploadOnCloudinary=async(localFilePath)=>{
 try {
     if(!localFilePath)return null;
     const response=await cloudinary.uploader.upload(localFilePath,{resource_type:"auto"});
-    fs.unlinkSync(localFilePath);
-    return response;
+    if (fs.existsSync(localFilePath)) {
+        fs.unlinkSync(localFilePath);  // Delete file after upload
+    }
+    return response.secure_url;
 } catch (error) {
-    fs.unlinkSync(localFilePath);
+    if (fs.existsSync(localFilePath)) {
+        fs.unlinkSync(localFilePath);  // Delete file after upload
+    }
     return null;
 }
 }

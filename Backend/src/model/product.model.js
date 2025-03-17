@@ -22,6 +22,7 @@ const ProductSchema = new mongoose.Schema({
      required: true
      },
   images: [{ type: String }], // Store image URLs (Cloudinary integration)
+  videos: [{ type: String }], // Store image URLs (Cloudinary integration)
   ratings: { 
     type: Number,
      default: 0 
