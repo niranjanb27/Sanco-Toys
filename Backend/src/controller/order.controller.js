@@ -8,39 +8,42 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 const createOrder =asyncHandler(async(req,res)=>{
     const userId = req.auth?.userId;
     const user = await User.findOne({ clerkId: userId });
+    // console.log("user : ",user);
     if (!user) {
        return res.status(401).json(new ApiResponse(401,"null","Unauthorised req "));
     }
-
+    const {shippingAddress}=req.body;
+    console.log("Shipping address : ",shippingAddress);
     let cart =await Cart.findOne({user:user._id});
     if(!cart || cart.products.length===0){
         return res.status(400).json(new ApiResponse(400,null,"The cart is empty . Add items for order !"));
     }
 
+    let totalAmount = 0;
     const productsWithDetails = await Promise.all(
         cart.products.map(async (item) => {
-            const product = await Product.findById(item.product); // Fetch product details
+            const product = await Product.findById(item.product);
+            if (!product) {
+                throw new ApiError(404, `Product with ID ${item.product} not found`);
+            }
+            totalAmount += product.price * item.quantity;
             return {
-                product: {
-                    _id: product._id,
-                    name: product.name,
-                    price: product.price
-                },
+                product: product._id,  // Store only product ID
                 quantity: item.quantity
             };
         })
     );
-
-    const totalAmount = productsWithDetails.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    console.log("Total Amount:", totalAmount);
 
     const order = new Order({
         user: user._id,
         products: productsWithDetails,
         totalAmount,
-        status: "Pending",
+        paymentStatus: "pending",
+        shippingAddress
     });
     await order.save();
-
+    console.log("Order : ",order);
     cart.products = [];
     await cart.save();
     
@@ -86,7 +89,7 @@ const getOrderById =asyncHandler(async(req,res)=>{
     if (!user) {
        return res.status(401).json(new ApiResponse(401,"null","Unauthorised req "));
     }
-    const orderId=req.params.orderId;
+    const orderId=req.params.id;
 
     const order= await Order.findById(orderId);
     if(!order){
@@ -99,32 +102,33 @@ const cancelOrder =asyncHandler(async(req,res)=>{
     const userId = req.auth?.userId;
     const user = await User.findOne({ clerkId: userId });
     if (!user) {
-        throw new ApiError(401, "Unauthorized request!");
+        return res.status(401).json(new ApiResponse(401,null,"Unauthorised request ! "));
     }
-    
-    const order = await Order.findOne({ _id: req.params.orderId, user: user._id });
+    const orderId=req.params.id;
+    const order = await Order.findOne({ _id: orderId, user: user._id });
     if (!order) {
-        throw new ApiError(404, "Order not found!");
+        return res.status(404).json(new ApiResponse(404,null,"Order not found"));
     }
     
-    if (order.status !== "Pending") {
-        throw new ApiError(400, "Order cannot be canceled after processing starts.");
+    if (order.orderStatus !== "processing") {
+        return res.status(400).json(new ApiResponse(400,null,"Order cannot be canceled after processing starts."))
     }
     
     await order.deleteOne();
     res.status(200).json(new ApiResponse(200, null, "Order canceled successfully!"));
 
 });
+// Admin 
 const updateOrderStatus =asyncHandler(async(req,res)=>{
-    const { orderId } = req.params;
+    const  orderId  = req.params.id;
     const { status } = req.body;
     
     const order = await Order.findById(orderId);
     if (!order) {
-        return res.status(404).json(new ApiResponse(404,null,"Oder not found"))
+        return res.status(404).json(new ApiResponse(404,null,"Order not found"));
     }
     
-    order.status = status;
+    order.orderStatus = status;
     await order.save();
     
     res.status(200).json(new ApiResponse(200, order, "Order status updated successfully!"));
@@ -137,4 +141,9 @@ const getAllOrders =asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,allOrder,"All orders are get fetched ! "));
 });
 
-export{createOrder,getUserOrders,getOrderById,cancelOrder,updateOrderStatus,getAllOrders}
+export{createOrder,
+    getUserOrders,
+    getOrderById,
+    cancelOrder,
+    updateOrderStatus,
+    getAllOrders}

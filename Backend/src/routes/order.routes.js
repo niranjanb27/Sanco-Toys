@@ -6,15 +6,15 @@ import { cancelOrder, createOrder, getAllOrders, getOrderById, getUserOrders, up
 
 const orderRouter=Router();
 
-orderRouter.post("/create-order",ClerkExpressRequireAuth,syncUser,createOrder);
+orderRouter.post("/create-order",ClerkExpressRequireAuth(),syncUser,createOrder);
 
 orderRouter.get("/get-user-orders",ClerkExpressRequireAuth(),syncUser,getUserOrders);
 
-orderRouter.get("/get-order",ClerkExpressRequireAuth(),syncUser,getOrderById);
+orderRouter.get("/get-order/:id",ClerkExpressRequireAuth(),syncUser,getOrderById);
 
-orderRouter.patch("update-order-status",ClerkExpressRequireAuth(),syncUser,checkAdmin,updateOrderStatus);
+orderRouter.patch("/update-order-status/:id",ClerkExpressRequireAuth(),syncUser,checkAdmin,updateOrderStatus);
 
-orderRouter.delete("/cancel-order",ClerkExpressRequireAuth(),syncUser,cancelOrder);
+orderRouter.delete("/cancel-order/:id",ClerkExpressRequireAuth(),syncUser,cancelOrder);
 
-orderRouter.get("/get-all-order",ClerkExpressRequireAuth(),syncUser,checkAdmin,getAllOrders);
+orderRouter.get("/get-all-orders",ClerkExpressRequireAuth(),syncUser,checkAdmin,getAllOrders);
 export default orderRouter;
