@@ -2,7 +2,7 @@ import User from "../model/user.model.js";
 
 export const syncUser = async (req, res, next) => {
   try {
-    const { userId, email } = req.auth;
+    const { userId } = req.auth;
     let user = await User.findOne({ clerkId: userId });
     // console.log("User in syncUser",user);
     // if (!user) {
@@ -15,7 +15,11 @@ export const syncUser = async (req, res, next) => {
       });
       const clerkUser = await clerkResponse.json();
       const email = clerkUser.email_addresses?.[0]?.email_address || null;
-      user = await User.create({ clerkId: userId, email });
+      const firstName = clerkUser.first_name || '';
+      const lastName = clerkUser.last_name || '';
+      const name = `${firstName} ${lastName}`.trim();
+      const phoneNumber = clerkUser.phone_numbers?.[0]?.phone_number || null;
+      user = await User.create({ clerkId: userId, email,name,phoneNumber });
   } 
   req.user = user; // Attach user data to request
   next();

@@ -16,7 +16,10 @@ const ProductSchema = new mongoose.Schema({
   stock: { 
     type: Number,
      required: true 
-    }, // Inventory count
+    }, //Inventory count
+  discount: { 
+    type: Number,
+    }, //Inventory count
   category: {
      type: String, 
      required: true

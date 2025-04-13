@@ -9,11 +9,11 @@ const productRouter =Router();
 
 //  create product route (Admin)
 productRouter.post("/create-product",ClerkExpressRequireAuth(),syncUser,checkAdmin,upload.fields([{
-    name:"images",maxCount:10
+    name:"images",maxCount:15
 },
 {
     name:"videos",
-    maxCount:2
+    maxCount:5
 }
 ]),createProduct);
 
@@ -24,7 +24,14 @@ productRouter.get("/get-all-products",getAllProduct);
 productRouter.get("/get-product/:id",getProductById);
 
 // update the product route (Admin)
-productRouter.patch("/update-product/:id",ClerkExpressRequireAuth(),syncUser,checkAdmin,updateProduct);
+productRouter.patch("/update-product/:id",ClerkExpressRequireAuth(),syncUser,checkAdmin,upload.fields([{
+    name:"images",maxCount:15
+},
+{
+    name:"videos",
+    maxCount:5
+}
+]),updateProduct);
 
 // delete the product route(Admin)
 productRouter.delete("/delete-product/:id",ClerkExpressRequireAuth(),syncUser,checkAdmin,deleteProduct);

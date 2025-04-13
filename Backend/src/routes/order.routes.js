@@ -12,9 +12,11 @@ orderRouter.get("/get-user-orders",ClerkExpressRequireAuth(),syncUser,getUserOrd
 
 orderRouter.get("/get-order/:id",ClerkExpressRequireAuth(),syncUser,getOrderById);
 
+// Admin
 orderRouter.patch("/update-order-status/:id",ClerkExpressRequireAuth(),syncUser,checkAdmin,updateOrderStatus);
 
 orderRouter.delete("/cancel-order/:id",ClerkExpressRequireAuth(),syncUser,cancelOrder);
 
+// admin
 orderRouter.get("/get-all-orders",ClerkExpressRequireAuth(),syncUser,checkAdmin,getAllOrders);
 export default orderRouter;

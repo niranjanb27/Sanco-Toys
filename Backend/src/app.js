@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import {ClerkExpressRequireAuth} from "@clerk/clerk-sdk-node"
 import { syncUser } from "./middlewares/syncuser.middleware.js"
 const app= express();
+import { sendInvoiceEmail } from "./utils/sendEmail.js"
 
 app.use(cors({
     // origin:process.env.CORS_ORIGIN,
@@ -15,10 +16,19 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
-app.get("/protected", ClerkExpressRequireAuth(),syncUser, (req, res) => {
-    console.log("req auth : ",req)
-    res.json({ message: `Hello, user ${req.auth.userId}` });
-  });
+// Time pass email sending check 
+// sendInvoiceEmail("anujcode10@gmail.com")
+//     .then((res) => console.log("Invoice email sent successfully!",res))
+//     .catch((error) => console.error("Error sending invoice email:", error));
+
+    app.get("/api/v1/sync-user", ClerkExpressRequireAuth(), syncUser, (req, res) => {
+      res.status(200).json({
+        success: true,
+        message: "User synced successfully",
+        user: req.user,
+      });
+    });
+    
 
 
 // import user routes 
@@ -36,5 +46,6 @@ app.use("/api/v1/cart",cartRouter);
 // import order route 
 import orderRouter from "./routes/order.routes.js"
 app.use("/api/v1/order",orderRouter);
+
 
   export {app};
