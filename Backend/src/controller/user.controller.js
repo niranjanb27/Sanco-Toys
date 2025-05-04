@@ -1,7 +1,7 @@
 import User from "../model/user.model.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import { ApiResponse} from "../utils/ApiResponse.js"
-import { users } from "@clerk/clerk-sdk-node";
+import {  clerkClient  } from "@clerk/clerk-sdk-node";
 
 const getAlluser=asyncHandler(async(req,res)=>{
     // if (!req.auth || !req.auth.userId) {
@@ -28,7 +28,7 @@ const deleteUser=asyncHandler(async (req,res)=>{
     if(!deletedUser){
         return res.status(500).json(new ApiResponse(500,null,"User not get deleted from database"));
     }
-    await users.deleteUser(clerkId);
+    await clerkClient.users.deleteUser(clerkId);
 
     return res.status(200).json(new ApiResponse(200,null,"User get deleted from databse and clerk !")) 
 });

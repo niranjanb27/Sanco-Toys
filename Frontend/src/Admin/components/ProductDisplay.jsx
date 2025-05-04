@@ -140,7 +140,7 @@ const handleDelete=async(product)=>{
               stock > 0 ? "text-green-600" : "text-red-600"
             }`}
           >
-            {stock > 0 ? "In Stock" : "Out of Stock"}
+            {stock > 0 ? `In Stock (${stock} available)` : "Out of Stock"}
           </span>
         </p>
       </div>

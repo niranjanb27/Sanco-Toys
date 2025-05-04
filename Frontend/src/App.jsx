@@ -33,18 +33,21 @@ import Products from "./Admin/Products.jsx";
 import UpdateProductForm from "./Admin/UpdateProduct.jsx";
 import AllOrders from "./Admin/AllOrders.jsx";
 
-
+import { useUserStore } from "./context/useUserStore.js";
+import OrderSummaryPage from "./pages/OrderSummaryPage.jsx";
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-function App () {
+function App() {
+  const userData = useUserStore((state) => state.userData);
   const { getToken } = useAuth();
   const token = getToken();
-  console.log("token :",token);
+  // console.log("token :",token);
   return (
     <>
-      <Navbar />
+      <Navbar userData={userData} />
       <Routes>
+
         {/* 🔓 Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -53,9 +56,17 @@ function App () {
         <Route path="/contact" element={<Contact />} />
         <Route path="/terms&conditions" element={<TnC />} />
         <Route path="/privacy-policies" element={<PrivacyPolicy />} />
+        <Route path="/feedback-form" element={<Feedback />} />
 
         {/* Clerk Auth Routes */}
-        <Route path="/sign-in" element={<SignIn routing="path" path="/sign-in" />} />
+        <Route
+          path="/sign-in"
+          element={
+            <div className="flex justify-center items-center min-h-screen">
+              <SignIn routing="path" path="/sign-in" />
+            </div>
+          }
+        />
         <Route path="/sign-up" element={<SignUp routing="path" path="/sign-up" />} />
 
         {/* 🔐 Protected Routes */}
@@ -72,19 +83,19 @@ function App () {
             </>
           }
         />
-        {/* <Route
-        path="/checkout"
-        element={
-          <>
-            <SignedIn>
-              <Checkout />
-            </SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
-          </>
-        }
-      /> */}
+        <Route
+          path="/order-summary"
+          element={
+            <>
+              <SignedIn>
+                <OrderSummaryPage />
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </>
+          }
+        />
         <Route
           path="/orders"
           element={
@@ -135,11 +146,11 @@ function App () {
           </>
         } />
 
-        <Route path="/admin/all-product" element={
+        <Route path="/admin/all-products" element={
           <>
             <SignedIn>
               <AdminRoute>
-                <Products/>
+                <Products />
               </AdminRoute>
             </SignedIn>
             <SignedOut>
@@ -151,7 +162,7 @@ function App () {
           <>
             <SignedIn>
               <AdminRoute>
-               <AllOrders/>
+                <AllOrders />
               </AdminRoute>
             </SignedIn>
             <SignedOut>
@@ -164,7 +175,7 @@ function App () {
           <>
             <SignedIn>
               <AdminRoute>
-               <UpdateProductForm/>
+                <UpdateProductForm />
               </AdminRoute>
             </SignedIn>
             <SignedOut>

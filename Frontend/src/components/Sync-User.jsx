@@ -30,18 +30,18 @@ export const SyncUser = () => {
 
 
         // this part will uncomment later 
-        /*
+    
         const cartRes = await axios.get(`http://localhost:5000/api/v1/cart/get-cart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCart(cartRes.data.cart || []);
-
+        setCart(cartRes.data.data || []);
+        console.log("Cart response in Sync User : ",cartRes.data.data);
         // Then, fetch orders
-        const orderRes = await axios.get(`http://localhost:5000/api/v1/order/get-user-orders`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setOrders(orderRes.data.orders || []);
-*/
+        // const orderRes = await axios.get(`http://localhost:5000/api/v1/order/get-user-orders`, {
+        //   headers: { Authorization: `Bearer ${token}` },
+        // });
+        // setOrders(orderRes.data.orders || []);
+
         console.log("✅ User, cart, and orders synced successfully.");
       } catch (err) {
         console.error("❌ Sync error:", err.response?.data || err.message);

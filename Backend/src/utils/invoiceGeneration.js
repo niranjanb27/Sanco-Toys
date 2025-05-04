@@ -1,11 +1,11 @@
 import easyinvoice from "easyinvoice";
 import fs from "fs/promises";
 import Product from "../model/product.model.js";  
-import User from "../model/user.model.js"
-const generateInvoice = async (order) => {
+import User from "../model/user.model.js";
 
-    const user=await User.findById(order.user);
-    // Fetch detailed product info
+const generateInvoice = async (order) => {
+    const user = await User.findById(order.user);
+
     const detailedProducts = await Promise.all(
         order.products.map(async (item) => {
             const product = await Product.findById(item.product);
@@ -16,6 +16,15 @@ const generateInvoice = async (order) => {
             };
         })
     );
+
+    const shippingCharge = 40;
+
+    // Add shipping as a separate line item
+    detailedProducts.push({
+        quantity: 1,
+        description: "Shipping Charges",
+        price: shippingCharge
+    });
 
     const data = {
         documentTitle: "Invoice",
@@ -28,26 +37,19 @@ const generateInvoice = async (order) => {
             country: "India"
         },
         client: {
-            // company: order.user.name,
-            // address: order.shippingAddress.street + ", " + order.shippingAddress.city + ", " + order.shippingAddress.zip,
-            // zip: order.shippingAddress.zip,
-            // city: order.shippingAddress.city,
-            // country: order.shippingAddress.country
-
-            company: user.name,
-            address:order.shippingAddress,
-            country:"India"
+            company: ` ${user.name}\n \n${user.email}\n${user.phoneNumber}`,
+            address: order.shippingAddress,
+            country: "India"
         },
         invoiceNumber: order._id.toString(),
         invoiceDate: new Date().toISOString().split("T")[0],
         products: detailedProducts,
-        total: order.totalAmount
+        bottomNotice: `Invoice No: ${order._id} | Date: ${new Date().toISOString().split("T")[0]}`
     };
+    
 
     const result = await easyinvoice.createInvoice(data);
-    const invoicePath = `invoices/invoice_${order._id}.pdf`;
-    await fs.writeFile(invoicePath, result.pdf, "base64");
-
-    return invoicePath;
+    return result.pdf;
 };
-export {generateInvoice};
+
+export { generateInvoice };

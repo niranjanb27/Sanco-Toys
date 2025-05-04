@@ -1,16 +1,21 @@
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
-  user: { type: String, required: true },
+  user: {    type: mongoose.Schema.Types.Mixed, 
+    required: true  },
   products: [
     {
-      product: { type: String, required: true },
+      product: { type: mongoose.Schema.Types.Mixed,  required: true },
       quantity: { type: Number, required: true },
     }
   ],
   totalAmount: { 
     type: Number, 
     required: true
+ },
+ invoice:{
+  type:String,
+  default:""
  },
   paymentStatus: { 
     type: String,

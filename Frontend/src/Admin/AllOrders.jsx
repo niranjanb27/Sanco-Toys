@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  Truck,
-  PackageCheck,
-  IndianRupee,
-  MapPin,
-} from "lucide-react";
-
-const statusOptions = ["processing", "shipped", "delivered", "cancelled"];
 
 const AdminOrders = () => {
   const { getToken } = useAuth();
   const [orders, setOrders] = useState([]);
+  const [updatingStatus, setUpdatingStatus] = useState("");
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const fetchOrders = async () => {
-    const token = await getToken();
     try {
-      const res = await axios.get("http://localhost:5000/api/v1/order/get-all-orders", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const token = await getToken();
+      const res = await axios.get(
+        "http://localhost:5000/api/v1/order/get-all-orders",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setOrders(res.data.data);
-      console.log("orders : ", res.data.data);
-    } catch (error) {
-      console.error("Error fetching orders", error);
+    } catch (err) {
+      console.error("Failed to fetch orders", err);
       toast.error("Failed to fetch orders");
     }
   };
 
   const handleStatusChange = async (orderId, newStatus) => {
-    console.log("id : ",orderId);
-    console.log("status : ",newStatus);
-    
+    setUpdatingStatus(orderId);
     const token = await getToken();
     try {
       await axios.patch(
@@ -45,134 +42,124 @@ const AdminOrders = () => {
       );
       toast.success("Order status updated!");
       fetchOrders();
-    } catch (error) {
-      console.error("Error updating order status", error);
+    } catch (err) {
+      console.error("Failed to update order status", err);
       toast.error("Failed to update status");
+    } finally {
+      setUpdatingStatus("");
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const handleInvoicePreview = (invoiceBase64) => {
+    if (!invoiceBase64) {
+      toast.warn("Invoice not available.");
+      return;
+    }
+
+    const pdfDataUrl = invoiceBase64.startsWith("data:application/pdf;base64,")
+      ? invoiceBase64
+      : `data:application/pdf;base64,${invoiceBase64}`;
+
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+          <head><title>Invoice Preview</title></head>
+          <body style="margin:0">
+            <iframe width="100%" height="100%" style="border:0" src="${pdfDataUrl}"></iframe>
+          </body>
+        </html>
+      `);
+    } else {
+      toast.error("Failed to open new window for preview.");
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">
-        🧾 Admin Orders Dashboard
-      </h1>
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+      <ToastContainer />
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">All Orders</h2>
 
-      {orders.length === 0 ? (
-        <p className="text-center text-gray-500">No orders found.</p>
-      ) : (
-        <div className="space-y-6">
-          {orders.map((order) => (
-            <div
-              key={order._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-4 md:flex md:items-start gap-6 border"
-            >
-              {/* Products thumbnail area */}
-              <div className="w-full md:w-48 flex-shrink-0">
-                {order.products[0]?.product?.images?.[0] ? (
-                  <img
-                    src={order.products[0].product.images[0]}
-                    alt="Product"
-                    className="w-full h-32 object-cover rounded-xl"
-                  />
-                ) : (
-                  <div className="w-full h-32 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400">
-                    No Image
-                  </div>
-                )}
+      <div className="space-y-6">
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 bg-white space-y-4"
+          >
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="text-base sm:text-lg font-semibold text-gray-800">
+                Order ID: {order._id}
               </div>
+              <button
+                onClick={() => handleInvoicePreview(order.invoice)}
+                className="w-full sm:w-auto px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+              >
+                Preview Invoice
+              </button>
+            </div>
 
-              {/* Info area */}
-              <div className="flex-1 space-y-3 mt-4 md:mt-0">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-700">
-                    <PackageCheck className="inline-block mr-2 text-blue-500" />
-                    Order #{order._id.slice(-6)}
-                  </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <p className="font-medium">User:</p>
+                <p>{order.user?.name || "Guest"}</p>
+                <p>{order.user?.email || "N/A"}</p>
+                <p>{order.user?.phone || "N/A"}</p>
+              </div>
+              <div>
+                <p className="font-medium">Shipping Address:</p>
+                <p>{order.shippingAddress || "N/A"}</p>
+              </div>
+              <div>
+                <p className="font-medium">Total Amount:</p>
+                <p>₹{order.totalAmount}</p>
+                <p>
+                  <span className="font-medium">Payment:</span>{" "}
                   <span
-                    className={`text-xs md:text-sm px-3 py-1 rounded-full font-medium ${
-                      order.paymentStatus === "paid"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
+                    className={`font-semibold ${
+                      order.paymentStatus === "paid" ? "text-green-600" : "text-red-600"
                     }`}
                   >
-                    {order.paymentStatus.toUpperCase()}
+                    {order.paymentStatus}
                   </span>
-                </div>
-
-                <div className="text-sm text-gray-600">
-                  <p>
-                    <IndianRupee className="inline-block mr-1 text-green-500" />
-                    <span className="font-medium text-gray-800">
-                      ₹{order.totalAmount}
-                    </span>{" "}
-                    via {order.paymentMethod}
-                  </p>
-                  <p>
-                    <MapPin className="inline-block mr-1 text-red-400" />
-                    {order.shippingAddress}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">
-                    Order Status
-                  </label>
-                  <select
-                    value={order.orderStatus}
-                    onChange={(e) =>
-                      handleStatusChange(order._id, e.target.value)
-                    }
-                    className="w-full md:w-64 p-2 rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    {statusOptions.map((status) => (
-                      <option key={status} value={status}>
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                    Products in this order:
-                  </h3>
-                  <div className="flex flex-wrap gap-4">
-                    {order.products.map((prod) => (
-                      <div
-                        key={prod._id}
-                        className="bg-gray-50 border rounded-xl p-3 w-full sm:w-56 shadow-sm"
-                      >
-                        <p className="font-medium text-gray-800 truncate">
-                          {prod.product?.name}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Qty: {prod.quantity}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Price: ₹{prod.price}
-                        </p>
-                        {prod.product?.images?.[0] && (
-                          <img
-                            src={prod.product.images[0]}
-                            alt="product"
-                            className="h-24 w-full object-cover rounded-lg mt-2"
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-      )}
 
-      <ToastContainer position="top-right" autoClose={3000} />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-sm">
+              <label className="font-medium">Order Status:</label>
+              <select
+                value={order.orderStatus}
+                onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                className="border border-gray-300 rounded px-2 py-1 w-full sm:w-auto"
+                disabled={updatingStatus === order._id}
+              >
+                {["processing", "shipped", "delivered", "cancelled"].map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <p className="font-medium mb-1">Products:</p>
+              <ul className="list-disc pl-6 text-sm space-y-1">
+                {order.products.map((item) => (
+                  <li key={item.product._id}>
+                    {item.product.name} (Qty: {item.quantity}) — ₹{item.product.price}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+
+        {orders.length === 0 && (
+          <div className="text-center text-gray-500 text-sm mt-6">
+            No orders found.
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import React from 'react'
 import Testimonial from './Testimonial' // adjust path if needed
 // import { Button } from "@/components/ui/button" // if you're using shadcn/ui button
-// import { useNavigate } from 'react-router-dom' // if using React Router
+import { useNavigate } from 'react-router-dom'
 
 const TestimonialSection = () => {
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     return (
         <section className="w-full px-4 py-16 bg-white">
@@ -26,12 +26,12 @@ const TestimonialSection = () => {
             Give Your Feedback
           </Button> */}
 
-                    <button
+                    {/* <button
                         className="bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition-all"
-                        // onClick={() => navigate('/feedback')}
+                        onClick={() => navigate('/feedback-form')}
                     >
                         Give Your Feedback
-                    </button>
+                    </button> */}
 
                 </div>
             </div>

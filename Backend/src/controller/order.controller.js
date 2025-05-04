@@ -49,6 +49,7 @@ const createOrder =asyncHandler(async(req,res)=>{
     
     res.status(201).json(new ApiResponse(201, order, "Order placed successfully!"));
 });
+
 const getUserOrders =asyncHandler(async(req,res)=>{
     const userId = req.auth?.userId;
     const user = await User.findOne({ clerkId: userId });
@@ -56,8 +57,7 @@ const getUserOrders =asyncHandler(async(req,res)=>{
        return res.status(401).json(new ApiResponse(401,"null","Unauthorised req "));
     }
 
-    let orders = await Order.find({ user: user._id });
-    
+    let orders = await Order.find({ user: user });
     // If details not get then uncomment this !
 
     // orders = await Promise.all(
@@ -81,8 +81,8 @@ const getUserOrders =asyncHandler(async(req,res)=>{
     // );
 
     res.status(200).json(new ApiResponse(200, orders, "Orders retrieved successfully!"));
-
 });
+
 const getOrderById =asyncHandler(async(req,res)=>{
     const userId = req.auth?.userId;
     const user = await User.findOne({ clerkId: userId });
@@ -98,6 +98,7 @@ const getOrderById =asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,order,"The order by id get fetched successfully ! "));
 
 });
+
 const cancelOrder =asyncHandler(async(req,res)=>{
     const userId = req.auth?.userId;
     const user = await User.findOne({ clerkId: userId });
@@ -119,6 +120,7 @@ const cancelOrder =asyncHandler(async(req,res)=>{
 
 });
 // Admin 
+
 const updateOrderStatus =asyncHandler(async(req,res)=>{
     const  orderId  = req.params.id;
     const { status } = req.body;
@@ -133,6 +135,7 @@ const updateOrderStatus =asyncHandler(async(req,res)=>{
     
     res.status(200).json(new ApiResponse(200, order, "Order status updated successfully!"));
 });
+
 const getAllOrders =asyncHandler(async(req,res)=>{
     const allOrder=await Order.find();
     if(!allOrder){
