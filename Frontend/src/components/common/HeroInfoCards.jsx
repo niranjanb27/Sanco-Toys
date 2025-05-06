@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const heroData = [
   {
     id: 1,
     title: 'Power Tanker',
-    description:
-      'Fuel up your playtime with our Power Tanker Truck!',
+    description: 'Fuel up your playtime with our Power Tanker Truck!',
     image: '/public/PT.png',
     background: '/public/PT_bg.jpg',
     reverse: false,
   },
   {
     id: 2,
-    title: 'Dumper Truck',
+    title: 'Dump Truck',
     description: 'Calling all junior builders! Our Dumper Truck is designed for kids who love to dig, haul, and dump.',
     image: '/public/DT.jpg',
     background: '/public/DT_bg.jpg',
@@ -21,35 +20,40 @@ const heroData = [
   {
     id: 3,
     title: 'Concrete Mixer',
-    description: 'Mix up some construction fun with our Concrete Mixer Truck! ',
+    description: 'Mix up some construction fun with our Concrete Mixer Truck!',
     image: '/public/CM.png',
     background: '/public/CM_bg.jpg',
     reverse: false,
   },
-  // {
-  //   id: 4,
-  //   title: 'Augmented Reality Games',
-  //   description: 'Bring toys to life with our AR-enhanced experiences.',
-  //   image: '/public/ML.png',
-  //   background: '/public/ML_bg.jpeg',
-  //   reverse: true,
-  // },
-  // {
-  //   id: 5,
-  //   title: 'Eco-Friendly Smart Toys',
-  //   description: 'Sustainability meets innovation in our eco-smart toy line.',
-  //   image: '/public/FF.png',
-  //   background: '/public/FF_bg.jpeg',
-  //   reverse: false,
-  // },
 ];
 
 const HeroCard = ({ title, description, image, background, reverse }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   const gradientDirection = reverse ? 'to left' : 'to right';
+  const animationClass = visible
+    ? reverse
+      ? 'animate-slide-in-right'
+      : 'animate-slide-in-left'
+    : 'opacity-0 translate-y-10';
 
   return (
-    <section className="flex justify-center items-center py-12 px-4">
-      <div className="relative w-full max-w-5xl rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+    <section
+      ref={ref}
+      className={`flex justify-center items-center py-12 px-4 bg-black transition-all duration-700 ${animationClass}`}
+    >
+      <div className="relative w-full max-w-5xl rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,0,0,0.1)] hover:shadow-[0_0_25px_5px_rgba(255,255,255,0.3)] transition-shadow duration-500">
+
         {/* Background Image */}
         <div
           className="absolute inset-0"
@@ -85,15 +89,14 @@ const HeroCard = ({ title, description, image, background, reverse }) => {
 
           {/* Text Section */}
           <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center text-white text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl font-extrabold mb-4">{title}</h1>
-            <p className="text-base md:text-lg">{description}</p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">{title}</h1>
+            <p className="text-base md:text-2xl">{description}</p>
           </div>
         </div>
       </div>
     </section>
   );
 };
-
 
 const HeroSection = () => {
   return (

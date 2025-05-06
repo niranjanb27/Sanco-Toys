@@ -8,16 +8,16 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 text-gray-700 mt-12">
+    <footer className="bg-gray-100 ">
       {/* Top section */}
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Logo Section */}
         <div className="flex flex-col items-start space-y-4">
-          <img
-            src="/sanco_logo.png"
-            alt="Sanco Toys Logo"
-            className="h-16 w-auto"
-          />
+        <img
+    src="/sanco_logo.png"
+    alt="Sanco Toys Logo"
+    className="h-16 w-auto transform transition duration-300 hover:scale-110 "
+  />
           <p className="text-sm text-gray-500 font-bold">
           Where Imagination Comes to Life.
           </p>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react' // Make sure lucide-react is installed
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react'; // Make sure lucide-react is installed
 
 const faqs = [
   {
@@ -27,14 +27,14 @@ const faqs = [
     answer:
       "Yes, many of our toys are suitable for use in educational settings. Teachers and childcare providers appreciate the educational value and durability of our products, which can enhance learning experiences in classrooms, daycare centers, and homeschool environments.",
   },
-]
+];
 
 function FAQItem({ faq, isOpen, onToggle }) {
   return (
     <div className="border border-gray-200 rounded-xl mb-4 bg-white shadow-md transition-all duration-300 ease-in-out">
       <button
         onClick={onToggle}
-        className="w-full flex justify-between items-center px-6 py-4 text-left hover:bg-gray-50 focus:outline-none"
+        className="w-full flex justify-between items-center px-6 py-4 text-left "
       >
         <span className="text-lg font-semibold text-gray-800">{faq.question}</span>
         <span className="text-gray-500 transition-transform duration-300">
@@ -42,8 +42,10 @@ function FAQItem({ faq, isOpen, onToggle }) {
         </span>
       </button>
       <div
-        className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-[500px] py-2 opacity-100' : 'max-h-0 opacity-0'
+        className={`px-6 overflow-hidden transition-all duration-500 ease-in-out transform ${
+          isOpen
+            ? 'max-h-[500px] py-2 opacity-100 translate-y-0'
+            : 'max-h-0 opacity-0 translate-y-10'
         }`}
       >
         <p className="text-gray-600 text-base leading-relaxed">
@@ -51,19 +53,19 @@ function FAQItem({ faq, isOpen, onToggle }) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(null)
+  const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFAQ = (index) => {
-    setOpenIndex((prevIndex) => (prevIndex === index ? null : index))
-  }
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12" id="faq">
-      <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">
+    <section className="max-w-4xl mx-auto px-4 py-12 " id="faq">
+      <h2 className="text-3xl font-bold text-center text-white mb-10">
         Frequently Asked Questions
       </h2>
       {faqs.map((faq, index) => (
@@ -75,5 +77,5 @@ export default function FAQSection() {
         />
       ))}
     </section>
-  )
+  );
 }

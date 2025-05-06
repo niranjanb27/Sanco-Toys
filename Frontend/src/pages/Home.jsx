@@ -9,15 +9,17 @@ import HeroInfoCards from "../components/common/HeroInfoCards";
 
 function Home() {
   return (
-    <>
+    <div className=''>
       {/* <Navbar /> */}
       <HeroSection />
       <InfoBanner />
       <HeroInfoCards />
       <TestimonialSection />
+      <div className='bg-black'>
       <FAQSection />
+      </div>
       {/* <Footer /> */}
-    </>
+    </div>
   )
 }
 

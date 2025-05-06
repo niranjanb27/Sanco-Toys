@@ -1,28 +1,30 @@
 import React from 'react'
+import { PhoneCall } from 'lucide-react' // or Mail, Contact, etc.
 
 function Contact() {
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-16">
+    <div className="min-h-screen bg-black px-6 py-16 animate-fade-in-up">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl font-bold text-gray-800 mb-10 text-center">Contact Us</h1>
+      <h1 className="text-5xl font-bold text-red-500 mb-10 text-center flex justify-center items-center gap-3 animate-fade-in-up delay-[200ms]">
+          <PhoneCall className="w-10 h-10 text-red-500" />
+          Contact Us
+        </h1>
 
-        <div className="text-lg text-gray-700 leading-8 space-y-6">
-  <p>
-    We'd love to hear from you! Whether you have a question about our toys, need assistance,
-    or just want to share your feedback, feel free to reach out.
-  </p>
+        <div className="text-lg text-green-200 leading-8 space-y-6 animate-fade-in-up delay-[400ms]">
+          <p>
+            We'd love to hear from you! Whether you have a question about our toys, need assistance,
+            or just want to share your feedback, feel free to reach out.
+          </p>
 
-  <div className="space-y-4">
-    <p><strong>Email:</strong> <a href="mailto:info@sancotoys.com" className="text-blue-600 hover:underline">info@sancotoys.com</a></p>
-    <p><strong>Phone:</strong> <a href="tel:+918446090922" className="text-blue-600 hover:underline">8446090922</a></p>
-    <p><strong>Address:</strong> Plot No.A, 106 - 107, 1st Floor, H-Block, MIDC, Pimpri, Pune, Maharashtra, India - 411018</p>
-  </div>
+          <div className="space-y-4">
+            <p><strong>Email:</strong> <a href="mailto:info@sancotoys.com" className="text-blue-600 hover:underline">info@sancotoys.com</a></p>
+            <p><strong>Phone:</strong> <a href="tel:+918446090922" className="text-blue-600 hover:underline">8446090922</a></p>
+            <p><strong>Address:</strong> Plot No.A, 106 - 107, 1st Floor, H-Block, MIDC, Pimpri, Pune, Maharashtra, India - 411018</p>
+          </div>
+        </div>
 
-</div>
-
-
-        <div className="mt-16">
-          <h2 className="text-3xl font-semibold text-gray-800 mb-6">Visit Us</h2>
+        <div className="mt-16 animate-fade-in-up delay-[600ms]">
+          <h2 className="text-3xl font-semibold text-green-500 mb-6">Visit Us</h2>
           <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-md">
             <iframe
               title="Sanco Toys India Location"
@@ -35,7 +37,6 @@ function Contact() {
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-
         </div>
       </div>
     </div>

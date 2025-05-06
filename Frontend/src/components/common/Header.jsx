@@ -139,7 +139,7 @@ const Navbar = ({ userData }) => {
   const mobileLinkClass = "block w-full text-left hover:text-blue-500 transition";
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-white text-black shadow-md sticky top-0 z-50">
       <SignedIn>
         {userData?.role === "admin" ? (
           <>
