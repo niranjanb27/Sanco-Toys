@@ -1,12 +1,22 @@
 @import "tailwindcss";
+/* In src/index.css or App.css */
+body {
+  font-family: "DynaPuff", system-ui,'Orbitron', 'sans-serif';
+
+      
+}
+.normal-font{
+  font-weight: 200;
+}
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
   }
   
+  
   @keyframes flipIn {
     0% {
-      transform: rotateY(90deg);
+      transform: rotateY(180deg);
       opacity: 0;
     }
     100% {
@@ -22,10 +32,10 @@
   .animate-flip-in {
     animation: flipIn 1s ease-out forwards;
   }
-  @keyframes slideInLeft {
+  @keyframes slide-in-left {
     0% {
       opacity: 0;
-      transform: translateX(-80px);
+      transform: translateX(-60px);
     }
     100% {
       opacity: 1;
@@ -33,10 +43,10 @@
     }
   }
   
-  @keyframes slideInRight {
+  @keyframes slide-in-right {
     0% {
       opacity: 0;
-      transform: translateX(80px);
+      transform: translateX(60px);
     }
     100% {
       opacity: 1;
@@ -45,12 +55,13 @@
   }
   
   .animate-slide-in-left {
-    animation: slideInLeft 2s ease-out forwards;
+    animation: slide-in-left 3s ease-out forwards;
   }
   
   .animate-slide-in-right {
-    animation: slideInRight 2s ease-out forwards;
+    animation: slide-in-right 3s ease-out forwards;
   }
+  
   @keyframes fade-in-up {
     0% {
       opacity: 0;
@@ -93,5 +104,21 @@
   .delay-\[600ms\] {
     animation-delay: 0.6s;
   }
-  
+  /* styles.css */
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px); /* Start below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* End at normal position */
+  }
+}
+
+.card {
+  animation: fadeInUp 0.6s ease-in-out;
+}
+
     

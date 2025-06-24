@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Phone, PackageCheck, Smile, ShieldCheck, Baby } from "lucide-react";
+import {
+  Phone,
+  PackageCheck,
+  Smile,
+  ShieldCheck,
+  Baby,
+} from "lucide-react";
 
 const AnimatedItem = ({ children }) => {
   const ref = useRef(null);
@@ -18,7 +24,7 @@ const AnimatedItem = ({ children }) => {
     <div
       ref={ref}
       className={`transition-all duration-700 ease-out ${
-        visible ? "animate-flip-in" : "opacity-0 translate-y-10"
+        visible ? "animate-fade-in-up" : "opacity-0 translate-y-6"
       }`}
     >
       {children}
@@ -29,41 +35,41 @@ const AnimatedItem = ({ children }) => {
 const InfoBanner = () => {
   const items = [
     {
-      icon: <Phone size={30} className="text-primary hover:scale-110 transition-transform" />,
+      icon: <Baby size={36} className="text-red-600 hover:scale-150 transition" />,
+      title: "For Ages 3+",
+      description: "Safe for children 3 years and above",
+    },
+    {
+      icon: <Phone size={36} className="text-blue-500 hover:scale-150 transition" />,
       title: "Give Us A Call",
       description: "+91 8446090922",
     },
     {
-      icon: <PackageCheck size={30} className="text-primary hover:scale-110 transition-transform" />,
+      icon: <PackageCheck size={36} className="text-green-600 hover:scale-150 transition" />,
       title: "Bulk Inquiry",
-      description: "Email - info@sancotoys.com",
+      description: "info@sancotoys.com",
     },
     {
-      icon: <Smile size={30} className="text-primary hover:scale-110 transition-transform" />,
-      title: "Sanco's Quality Assurance",
-      description: "High Quality Products",
+      icon: <Smile size={36} className="text-yellow-600 hover:scale-150 transition" />,
+      title: "Sanco Quality",
+      description: "High Quality Toys",
     },
     {
-      icon: <ShieldCheck size={30} className="text-primary hover:scale-110 transition-transform" />,
+      icon: <ShieldCheck size={36} className="text-purple-600 hover:scale-150 transition" />,
       title: "BIS Certified",
-      description: "Meets BIS Safety Standards",
-    },
-    {
-      icon: <Baby size={30} className="text-primary hover:scale-110 transition-transform" />,
-      title: "For Ages 3+",
-      description: "Safe for children 3 years and above",
+      description: "Meets Safety Standards",
     },
   ];
 
   return (
-    <section className="w-full py-6 px-6 bg-white">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 text-center">
+    <section className="w-full py-8 px-4 bg-white">
+      <div className="max-w-7xl mx-auto flex flex-wrap justify-around gap-y-6 text-center ">
         {items.map((item, index) => (
           <AnimatedItem key={index}>
-            <div className="flex flex-col items-center space-y-3 px-4">
+            <div className="flex flex-col items-center space-y-1 px-2 ">
               {item.icon}
-              <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-              <p className="text-sm text-gray-600">{item.description}</p>
+              <span className="text-base font-semibold text-gray-800 normal-font">{item.title}</span>
+              <span className="text-sm text-gray-600">{item.description}</span>
             </div>
           </AnimatedItem>
         ))}
