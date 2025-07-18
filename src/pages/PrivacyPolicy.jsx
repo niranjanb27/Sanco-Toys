@@ -108,21 +108,21 @@ const PrivacyPolicy = ({
     <div className="min-h-screen bg-white px-6 py-16">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
-        <AnimatedSection>
+        
           <div className="flex items-center justify-center gap-4 mb-12">
             <TitleIcon className="text-red-500 w-10 h-10" />
             <h1 className="text-5xl font-bold text-red-500">{title}</h1>
           </div>
-        </AnimatedSection>
+        
 
         {/* Policy Sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sections.map((section, index) => {
             const Icon = section.icon;
             return (
-              <AnimatedSection key={index}>
+              
                 <div
-                  className={`bg-white rounded-xl shadow-md p-6 border-t-4 ${section.borderColor} hover:shadow-xl transition`}
+                  className={`bg-white rounded-xl shadow-md p-6 border-t-4 ${section.borderColor}  animate-fade-in-up hover:shadow-xl`}
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <Icon className={`w-6 h-6 ${section.iconColor}`} />
@@ -132,7 +132,7 @@ const PrivacyPolicy = ({
                   </div>
                   <p className={`leading-relaxed ${section.textColor}`}>{section.content}</p>
                 </div>
-              </AnimatedSection>
+              
             );
           })}
         </div>

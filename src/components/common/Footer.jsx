@@ -18,7 +18,7 @@ const Footer = () => {
     alt="Sanco Toys Logo"
     className="h-16 w-auto transform transition duration-300 hover:scale-110 "
   />
-          <p className="text-sm text-gray-900 font-bold">
+          <p className="text-sm text-gray-900 font-bold normal-font">
           Where Imagination Comes to Life.
           </p>
         </div>
@@ -26,15 +26,15 @@ const Footer = () => {
         {/* Links + Socials */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <h4 className="font-semibold text-green-800">Company</h4>
+            <h4 className="font-semibold text-black">Company</h4>
             <a href="/about" className="text-yellow-500 hover:font-bold block">About Us</a>
             <a href="/contact" className="text-red-500 hover:font-bold block">Contact Us</a>
             <a href="/contact" className="text-green-500 hover:font-bold block">Careers</a>
             <a href="/certification" className="text-blue-500 hover:font-bold block">Certifications</a>
           </div>
 
-          <div className="space-y-2">
-            <h4 className="font-semibold text-blue-800">Support</h4>
+          <div className="space-y-2 ">
+            <h4 className="font-semibold text-black">Support</h4>
             <a href="/customer-care" className="text-red-500 hover:font-bold block">Customer Care</a>
             <a href="#faq" className="text-purple-500 hover:font-bold block">FAQs</a>
             {/* <a href="/" className="hover:text-blue-500 block">Shipping</a>
@@ -42,7 +42,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-semibold text-red-500">Legal</h4>
+            <h4 className="font-semibold text-black">Legal</h4>
             <a href="/privacy-policies" className="text-yellow-500 hover:font-bold block">Privacy Policy</a>
             <a href="/terms&conditions" className="text-blue-500 hover:font-bold block">Terms & Conditions</a>
             <div className="flex space-x-4 pt-2 ">

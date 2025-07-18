@@ -1,4 +1,13 @@
 @import "tailwindcss";
+/* In src/index.css or App.css */
+body {
+  font-family: "DynaPuff", system-ui,'Orbitron', 'sans-serif';
+
+      
+}
+.normal-font{
+  font-weight: 200;
+}
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -7,7 +16,7 @@
   
   @keyframes flipIn {
     0% {
-      transform: rotateY(90deg);
+      transform: rotateY(180deg);
       opacity: 0;
     }
     100% {

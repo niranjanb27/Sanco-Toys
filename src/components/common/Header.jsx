@@ -217,9 +217,9 @@ const Navbar = ({ userData }) => {
             <img src="/sanco_logo.png" alt="Logo" className="h-16 w-auto" />
           </Link>
           <div className="hidden md:flex items-center space-x-7 text-[17px]">
-            <Link to="/" className={linkClass}>Home</Link>
-            <Link to="/shop" className={linkClass}>Shop</Link>
-            <Link to="/about" className={linkClass}>About</Link>
+            <Link to="/" className={linkClass} style={{color:"red"}}>Home</Link>
+            <Link to="/shop" className={linkClass} style={{color:"green"}}>Shop</Link>
+            <Link to="/about" className={linkClass} style={{color:"blue"}}>About</Link>
             <SignInButton mode="modal">
               <button className={linkClass}>
                 <User className="w-5 h-5" />
@@ -234,9 +234,9 @@ const Navbar = ({ userData }) => {
         </div>
         {isMobileMenuOpen && (
           <div className="md:hidden px-4 pb-4 space-y-3 text-[16px]">
-            <Link to="/" className={mobileLinkClass}>Home</Link>
-            <Link to="/shop" className={mobileLinkClass}>Shop</Link>
-            <Link to="/about" className={mobileLinkClass}>About</Link>
+            <Link to="/" className={mobileLinkClass} style={{color:"red"}}>Home</Link>
+            <Link to="/shop" className={mobileLinkClass} style={{color:"green"}}>Shop</Link>
+            <Link to="/about" className={mobileLinkClass} style={{color:"blue"}}>About</Link>
             <SignInButton mode="modal">
               <button className={`${mobileLinkClass} flex items-center gap-2`}>
                 <User className="w-5 h-5" />

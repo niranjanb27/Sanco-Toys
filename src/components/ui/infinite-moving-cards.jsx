@@ -28,21 +28,32 @@ const InfiniteMovingCards = ({ items = [], direction = 'left', speed = 'normal' 
         className="flex gap-6"
         {...loopAnimation}
       >
-        {[...items, ...items,... items].map((item, index) => (
+        {[...items, ...items, ...items, ...items].map((item, index) => (
           <div
-          key={index}
-          className={`min-w-[350px] max-w-[320px] border-t-4 ${
-            item.borderColor || 'border-gray-300'
-          } bg-white p-6 rounded-xl shadow-md flex flex-col justify-between hover:shadow-xl`}
-        >
-          <p className="text-gray-700 mb-4">"{item.quote}"</p>
-        
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-            <p className="text-sm text-gray-500">{item.role}</p>
+            key={index}
+            className={`relative min-w-[350px] max-w-[320px] border-t-4 ${item.borderColor || 'border-gray-300'
+              } bg-white p-6 rounded-xl shadow-md flex flex-col justify-between hover:shadow-xl`}
+          >
+            <p className="text-gray-700 mb-4 italic">"{item.quote}"</p>
+
+            {/* Footer with name, role, and image */}
+            <div className="mt-6 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+                <p className="text-sm text-gray-500">{item.role}</p>
+              </div>
+
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-15 h-15 rounded-md object-cover border border-gray-200 shadow-sm ml-4"
+                />
+              )}
+            </div>
           </div>
-        </div>
-        
+
+
         ))}
       </motion.div>
     </div>
