@@ -54,7 +54,7 @@ const Contact = ({
                 {item.icon}
                 <h2 className="text-lg font-semibold text-yellow-600">{item.label}</h2>
               </div>
-              <p className="text-green-700 break-words">
+              <p className="text-blue-600 break-words">
                 {item.href ? (
                   <a href={item.href} className="text-blue-600 hover:underline">
                     {item.value}
