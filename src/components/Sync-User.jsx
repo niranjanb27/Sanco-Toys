@@ -25,7 +25,7 @@ export const SyncUser = () => {
         const user = userRes.data.user;
         setUserData(user);
 
-        console.log("User : ",user);
+        // console.log("User : ",user);
         // Then, fetch cart
 
 
